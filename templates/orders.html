@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        setTimeout(function () {
+        window.location.reload();
+    }, 3000); // 5000 ms = 5 seconds
+    </script>
+
+  <title>Orders</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      padding: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    th {
+      background: #111827;
+      color: white;
+    }
+    .paid {
+      color: green;
+      font-weight: bold;
+    }
+    .pending {
+      color: orange;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<a href="/" style="display:inline-block;margin-bottom:15px;color:#2563eb;font-weight:bold;text-decoration:none;">
+← Back to Home
+</a>
+<body>
+
+<h2>Vending Machine Orders</h2>
+
+<table>
+  <tr>
+  <th>Order ID</th>
+  <th>Amount (₹)</th>
+  <th>Status</th>
+  <th>Payment ID</th>
+  <th>Date & Time</th>
+</tr>
+
+  {% for o in orders %}
+<tr>
+  <td>{{ o.order_id }}</td>
+  <td>{{ o.amount }}</td>
+  <td class="{{ 'paid' if o.paid else 'pending' }}">
+    {{ 'PAID' if o.paid else 'PENDING' }}
+  </td>
+  <td>{{ o.payment_id or '-' }}</td>
+  <td>{{ o.created_at }}</td>
+</tr>
+{% endfor %}
+</table>
+
+</body>
+</html>
