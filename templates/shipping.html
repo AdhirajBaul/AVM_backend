@@ -1,48 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shipping Policy</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f9fafb; padding: 24px; color:#111827; }
+    .wrap { max-width: 900px; margin: 0 auto; background:#fff; padding: 24px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
+    h1, h2, h3 { margin-top: 18px; }
+    p, li { line-height: 1.55; }
+    .muted { color:#6b7280; }
+    .box { background:#f3f4f6; border-radius: 10px; padding: 14px 16px; margin: 14px 0; }
+    a { color:#2563eb; text-decoration:none; font-weight:600; }
+    .footer-links { margin-top: 18px; padding-top: 14px; border-top: 1px solid #e5e7eb; }
+  </style>
 </head>
 <body>
-  <h2>Shipping Policy</h2>
+  <div class="wrap">
+    <h1>Shipping Policy</h1>
+    <p class="muted"><strong>Last Updated:</strong> 17 Jan 2026</p>
 
-  <p>
-    This website operates an <strong>Automated Vending Machine system</strong>
-    that provides instant, on-site delivery of products.
-  </p>
+    <div class="box">
+      <p><strong>Important:</strong> This service is an <strong>Automated Vending Machine</strong> system. Products are delivered <strong>instantly at the machine location</strong> after successful payment. There is <strong>no courier shipping</strong>, <strong>no postal delivery</strong>, and <strong>no physical dispatch</strong> to customer addresses.</p>
+    </div>
 
-  <p>
-    <strong>No physical shipping or courier delivery is involved.</strong>
-    All products are dispensed immediately from the vending machine
-    after successful payment.
-  </p>
+    <h2>1. What “Shipping” Means for This Service</h2>
+    <p>
+      Traditional e-commerce “shipping” involves packing, dispatch, and courier delivery to a customer’s address.
+      Our service works differently: a customer scans a QR code at the vending machine, completes a payment through
+      Razorpay’s secure checkout, and the machine dispenses the selected product <strong>on-site</strong>.
+    </p>
+    <p>
+      Therefore, for our business model, “shipping” refers to <strong>instant delivery at the vending machine location</strong>,
+      not delivery through logistics partners.
+    </p>
 
-  <p>
-    Once a customer completes a payment using the QR code displayed on
-    the vending machine, the machine automatically verifies the payment
-    and dispenses the selected item.
-  </p>
+    <h2>2. Delivery Method (No Courier / No Address Delivery)</h2>
+    <ul>
+      <li><strong>No address-based delivery:</strong> We do not deliver items to homes, hostels, or any personal address.</li>
+      <li><strong>No courier partners:</strong> We do not use courier companies, India Post, or any third-party logistics provider.</li>
+      <li><strong>No packaging & dispatch:</strong> Items are stored inside the vending machine and dispensed directly.</li>
+      <li><strong>No shipment tracking:</strong> Since there is no shipment, there is no tracking number or shipping status.</li>
+    </ul>
 
-  <p>
-    Since this is an automated, location-based service:
-  </p>
+    <h2>3. When Delivery Happens (Instant Dispensing)</h2>
+    <p>
+      Delivery occurs when the vending machine dispenses the product after the payment is verified.
+      In most cases, dispensing happens <strong>immediately (within seconds)</strong> after a successful payment confirmation.
+    </p>
+    <p>
+      Payment verification may take a short time depending on network conditions, payment method, or gateway response.
+      If the network is slow, the machine may take longer to confirm payment status.
+    </p>
 
-  <ul>
-    <li>No shipping addresses are collected</li>
-    <li>No delivery timelines apply</li>
-    <li>No third-party logistics or courier services are used</li>
-  </ul>
+    <h2>4. Delivery Timelines (Why “Shipping Time” is Not Applicable)</h2>
+    <p>
+      Because there is no courier shipping, typical shipping timelines (e.g., “3–5 days”) do not apply.
+      The relevant timeline in our service is <strong>payment verification and dispensing</strong>.
+    </p>
+    <ul>
+      <li><strong>Expected dispensing:</strong> Usually within seconds after payment success.</li>
+      <li><strong>Possible delay:</strong> In rare cases, delays can occur due to internet issues, gateway response delay, or machine-side connectivity.</li>
+    </ul>
 
-  <p>
-    In the event of a technical failure where payment is successful
-    but the item is not dispensed, the transaction will be handled
-    according to our <strong>Cancellations and Refunds Policy</strong>.
-  </p>
+    <h2>5. Service Area / Locations</h2>
+    <p>
+      The service is available only at locations where our Automated Vending Machine is installed and operational.
+      Delivery (dispensing) is possible only when the user is physically present at the vending machine.
+    </p>
+    <p>
+      If a machine is temporarily offline, under maintenance, or out of stock, delivery may not be possible until it is restored.
+    </p>
 
-  <p>
-    This shipping policy applies only to products dispensed via
-    the Automated Vending Machine and does not involve any form
-    of physical shipping.
-  </p>
+    <h2>6. Stock Availability & Substitution</h2>
+    <p>
+      Products dispensed depend on available stock inside the machine.
+      If a selected item is out of stock, the machine should not accept selection for that item (where supported).
+      We do not substitute products without user choice.
+    </p>
+
+    <h2>7. Failed Dispensing / Delivery Issues</h2>
+    <p>
+      A “delivery issue” in our model means <strong>payment is successful but the product is not dispensed</strong>.
+      This can happen due to:
+    </p>
+    <ul>
+      <li>Temporary mechanical jam or dispensing mechanism issue</li>
+      <li>Power interruption at the machine</li>
+      <li>Network interruption during payment verification</li>
+      <li>Machine maintenance or temporary error state</li>
+    </ul>
+    <p>
+      If payment is successful and dispensing fails, the transaction will be handled according to our
+      <strong>Cancellations & Refunds Policy</strong>.
+    </p>
+
+    <h2>8. Payments, Confirmation, and Razorpay Processing</h2>
+    <p>
+      Payments are processed securely via <strong>Razorpay</strong>. We do not store sensitive payment details
+      such as UPI PINs, card numbers, or banking credentials.
+    </p>
+    <p>
+      Payment success is determined by Razorpay’s confirmation (and/or captured status depending on method).
+      The vending machine dispenses items only after payment is confirmed as successful.
+    </p>
+
+    <h2>9. What If a Payment is Debited but Delivery Does Not Happen?</h2>
+    <p>
+      If your payment is debited but the product is not delivered (dispensed), one of the following may occur:
+    </p>
+    <ul>
+      <li><strong>Auto-reversal by bank/UPI:</strong> Some failed transactions are automatically reversed by the payment system.</li>
+      <li><strong>Refund processing:</strong> If payment is captured but dispensing fails, a refund may be initiated as per our refund policy.</li>
+    </ul>
+    <p>
+      For refund timelines and steps, please refer to our <strong>Cancellations & Refunds Policy</strong>.
+    </p>
+
+    <h2>10. Customer Responsibilities</h2>
+    <ul>
+      <li>Ensure you are at the correct vending machine location before paying.</li>
+      <li>Follow on-screen instructions on the vending machine during payment.</li>
+      <li>Do not leave the machine area until the payment status and dispensing outcome are clear.</li>
+      <li>Keep the payment reference/transaction ID (if available) for faster support.</li>
+    </ul>
+
+    <h2>11. Force Majeure / Events Beyond Control</h2>
+    <p>
+      We are not responsible for delays or failures caused by events beyond reasonable control, such as:
+      internet outages, payment network downtime, power failures, natural events, or third-party service disruptions.
+      In such cases, delivery may be delayed or temporarily unavailable.
+    </p>
+
+    <h2>12. Changes to This Policy</h2>
+    <p>
+      We may update this Shipping Policy from time to time to reflect changes in our service, machine locations,
+      operational procedures, or compliance requirements. The updated policy will be posted on this page with a revised date.
+    </p>
+
+    <h2>13. Contact & Support</h2>
+    <p>
+      If you face any issues related to delivery/dispensing, please contact us with the transaction details:
+    </p>
+    <ul>
+      <li><strong>Email:</strong> bauladhiraj90@gmail.com</li>
+    </ul>
+
+    <p class="muted" style="margin-top:14px;">
+      Note: This policy is for transparency and customer understanding of how delivery works for an Automated Vending Machine service.
+    </p>
+  </div>
 </body>
 </html>
