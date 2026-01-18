@@ -24,16 +24,6 @@ ESP32_BEARER_TOKEN = os.getenv("ESP32_BEARER_TOKEN")
 FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "dev_secret")
 
 # --------------------------------------------------
-# DEBUG (TEMPORARY)
-# --------------------------------------------------
-print("ENV CHECK:", {
-    "RAZORPAY_KEY_ID": bool(RAZORPAY_KEY_ID),
-    "RAZORPAY_KEY_SECRET": bool(RAZORPAY_KEY_SECRET),
-    "RAZORPAY_WEBHOOK_SECRET": bool(RAZORPAY_WEBHOOK_SECRET),
-    "ESP32_BEARER_TOKEN": bool(ESP32_BEARER_TOKEN),
-})
-
-# --------------------------------------------------
 # VALIDATION (AFTER DEFINE)
 # --------------------------------------------------
 missing = []
