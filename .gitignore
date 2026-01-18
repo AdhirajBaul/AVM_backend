@@ -1,4 +1,13 @@
-.env
-orders.db
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.env
+
+# Databases
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
