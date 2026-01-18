@@ -16,8 +16,27 @@ from db import init_db, insert_order, mark_paid, mark_failed, get_order, list_or
 # --------------------------------------------------
 load_dotenv()
 
-missing = []
+# ✅ DEFINE FIRST
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
+RAZORPAY_WEBHOOK_SECRET = os.getenv("RAZORPAY_WEBHOOK_SECRET")
+ESP32_BEARER_TOKEN = os.getenv("ESP32_BEARER_TOKEN")
+FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "dev_secret")
 
+# --------------------------------------------------
+# DEBUG (TEMPORARY)
+# --------------------------------------------------
+print("ENV CHECK:", {
+    "RAZORPAY_KEY_ID": bool(RAZORPAY_KEY_ID),
+    "RAZORPAY_KEY_SECRET": bool(RAZORPAY_KEY_SECRET),
+    "RAZORPAY_WEBHOOK_SECRET": bool(RAZORPAY_WEBHOOK_SECRET),
+    "ESP32_BEARER_TOKEN": bool(ESP32_BEARER_TOKEN),
+})
+
+# --------------------------------------------------
+# VALIDATION (AFTER DEFINE)
+# --------------------------------------------------
+missing = []
 if not RAZORPAY_KEY_ID:
     missing.append("RAZORPAY_KEY_ID")
 if not RAZORPAY_KEY_SECRET:
@@ -27,15 +46,9 @@ if not RAZORPAY_WEBHOOK_SECRET:
 if not ESP32_BEARER_TOKEN:
     missing.append("ESP32_BEARER_TOKEN")
 
-print("ENV CHECK:", {
-    "RAZORPAY_KEY_ID": bool(RAZORPAY_KEY_ID),
-    "RAZORPAY_KEY_SECRET": bool(RAZORPAY_KEY_SECRET),
-    "RAZORPAY_WEBHOOK_SECRET": bool(RAZORPAY_WEBHOOK_SECRET),
-    "ESP32_BEARER_TOKEN": bool(ESP32_BEARER_TOKEN),
-})
-
 if missing:
     raise RuntimeError(f"Missing env vars: {', '.join(missing)}")
+
 
 # --------------------------------------------------
 # APP INIT
