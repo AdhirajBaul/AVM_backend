@@ -16,15 +16,26 @@ from db import init_db, insert_order, mark_paid, mark_failed, get_order, list_or
 # --------------------------------------------------
 load_dotenv()
 
-RAZORPAY_KEY_ID = os.getenv("zp_live_S5PU9JqyrwqHhb")
-RAZORPAY_KEY_SECRET = os.getenv("tisGx5OJttEEM8cz0hChNjlw")
-RAZORPAY_WEBHOOK_SECRET = os.getenv("tisGx5OJttEEM8cz0hChNjlw")
+missing = []
 
-ESP32_BEARER_TOKEN = os.getenv("avm_esp32_9fK2pQ8xR7A_L0ngSeCrEt")
-FLASK_SECRET_KEY = os.getenv("some_long_random_secret", "dev_secret")
+if not RAZORPAY_KEY_ID:
+    missing.append("RAZORPAY_KEY_ID")
+if not RAZORPAY_KEY_SECRET:
+    missing.append("RAZORPAY_KEY_SECRET")
+if not RAZORPAY_WEBHOOK_SECRET:
+    missing.append("RAZORPAY_WEBHOOK_SECRET")
+if not ESP32_BEARER_TOKEN:
+    missing.append("ESP32_BEARER_TOKEN")
 
-if not all([RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, RAZORPAY_WEBHOOK_SECRET, ESP32_BEARER_TOKEN]):
-    raise RuntimeError("Missing required environment variables")
+print("ENV CHECK:", {
+    "RAZORPAY_KEY_ID": bool(RAZORPAY_KEY_ID),
+    "RAZORPAY_KEY_SECRET": bool(RAZORPAY_KEY_SECRET),
+    "RAZORPAY_WEBHOOK_SECRET": bool(RAZORPAY_WEBHOOK_SECRET),
+    "ESP32_BEARER_TOKEN": bool(ESP32_BEARER_TOKEN),
+})
+
+if missing:
+    raise RuntimeError(f"Missing env vars: {', '.join(missing)}")
 
 # --------------------------------------------------
 # APP INIT
