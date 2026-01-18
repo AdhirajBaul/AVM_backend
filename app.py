@@ -168,6 +168,16 @@ def refunds():
 def privacy():
     return render_template("privacy.html")
 
+@app.route("/pay/<order_id>")
+def pay_page(order_id):
+    # Simple payment page that opens Razorpay Checkout
+    return render_template(
+        "pay.html",
+        order_id=order_id,
+        razorpay_key_id=RAZORPAY_KEY_ID
+    )
+
+
 # --------------------------------------------------
 # MAIN
 # --------------------------------------------------

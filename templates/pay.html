@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pay</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+  <h3>Complete Payment</h3>
+
+  <script>
+    const options = {
+      key: "{{ razorpay_key_id }}",
+      order_id: "{{ order_id }}",
+      currency: "INR",
+      name: "AVM",
+      description: "Vending Machine Payment",
+      handler: function () {
+        document.body.innerHTML = "<h2>Payment Successful</h2>";
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  </script>
+</body>
+</html>
