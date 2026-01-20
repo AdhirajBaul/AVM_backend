@@ -3,42 +3,43 @@ import json
 import hmac
 import hashlib
 import uuid
-import sqlite3
 
 from flask import Flask, request, jsonify, abort, render_template
 from dotenv import load_dotenv
 import razorpay
 
-from db import init_db, insert_order, mark_paid, mark_failed, get_order, list_orders
+from db import (
+    init_db,
+    insert_order,
+    mark_paid,
+    mark_failed,
+    get_order,
+    list_orders
+)
 
 # --------------------------------------------------
 # LOAD ENV
 # --------------------------------------------------
 load_dotenv()
 
-# ✅ DEFINE FIRST
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 RAZORPAY_WEBHOOK_SECRET = os.getenv("RAZORPAY_WEBHOOK_SECRET")
 ESP32_BEARER_TOKEN = os.getenv("ESP32_BEARER_TOKEN")
 FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "dev_secret")
 
-# --------------------------------------------------
-# VALIDATION (AFTER DEFINE)
-# --------------------------------------------------
 missing = []
-if not RAZORPAY_KEY_ID:
-    missing.append("RAZORPAY_KEY_ID")
-if not RAZORPAY_KEY_SECRET:
-    missing.append("RAZORPAY_KEY_SECRET")
-if not RAZORPAY_WEBHOOK_SECRET:
-    missing.append("RAZORPAY_WEBHOOK_SECRET")
-if not ESP32_BEARER_TOKEN:
-    missing.append("ESP32_BEARER_TOKEN")
+for k, v in {
+    "RAZORPAY_KEY_ID": RAZORPAY_KEY_ID,
+    "RAZORPAY_KEY_SECRET": RAZORPAY_KEY_SECRET,
+    "RAZORPAY_WEBHOOK_SECRET": RAZORPAY_WEBHOOK_SECRET,
+    "ESP32_BEARER_TOKEN": ESP32_BEARER_TOKEN
+}.items():
+    if not v:
+        missing.append(k)
 
 if missing:
     raise RuntimeError(f"Missing env vars: {', '.join(missing)}")
-
 
 # --------------------------------------------------
 # APP INIT
@@ -67,15 +68,22 @@ def require_esp32_auth():
 # --------------------------------------------------
 @app.route("/")
 def home():
-    return render_template("index.html", razorpay_key_id=RAZORPAY_KEY_ID)
+    return render_template("index.html")
 
 @app.route("/orders")
 def orders():
-    rows = list_orders()
-    return render_template("orders.html", orders=rows)
+    return render_template("orders.html", orders=list_orders())
+
+@app.route("/pay/<order_id>")
+def pay_page(order_id):
+    return render_template(
+        "pay.html",
+        order_id=order_id,
+        razorpay_key_id=RAZORPAY_KEY_ID
+    )
 
 # --------------------------------------------------
-# API: CREATE ORDER (ESP32)
+# ESP32 API
 # --------------------------------------------------
 @app.route("/api/create_order", methods=["POST"])
 def create_order():
@@ -90,22 +98,19 @@ def create_order():
     receipt = f"rcpt_{uuid.uuid4().hex[:10]}"
 
     order = razorpay_client.order.create({
-        "amount": amount * 100,   # INR → paise
+        "amount": amount * 100,
         "currency": "INR",
         "receipt": receipt,
         "payment_capture": 1
     })
 
-    insert_order(order_id=order["id"], amount=amount)
+    insert_order(order["id"], amount)
 
     return jsonify({
         "order_id": order["id"],
-        "amount": amount
+        "pay_url": f"/pay/{order['id']}"
     })
 
-# --------------------------------------------------
-# API: ORDER STATUS (ESP32 POLLING)
-# --------------------------------------------------
 @app.route("/api/order_status/<order_id>")
 def order_status(order_id):
     require_esp32_auth()
@@ -116,14 +121,13 @@ def order_status(order_id):
 
     return jsonify({
         "order_id": row["order_id"],
-        "amount": row["amount"],
         "paid": bool(row["paid"]),
         "failed": bool(row["failed"]),
         "payment_id": row["payment_id"]
     })
 
 # --------------------------------------------------
-# WEBHOOK: RAZORPAY (SOURCE OF TRUTH)
+# WEBHOOK (SOURCE OF TRUTH)
 # --------------------------------------------------
 @app.route("/webhook/razorpay", methods=["POST"])
 def razorpay_webhook():
@@ -150,11 +154,9 @@ def razorpay_webhook():
         return jsonify({"status": "ignored"})
 
     if event_type == "payment.captured":
-        # ✅ DISPENSE ALLOWED
         mark_paid(order_id, payment_id)
 
     elif event_type == "payment.failed":
-        # ❌ DO NOT DISPENSE
         mark_failed(order_id)
 
     return jsonify({"status": "ok"})
@@ -181,43 +183,6 @@ def refunds():
 @app.route("/privacy")
 def privacy():
     return render_template("privacy.html")
-
-@app.route("/pay/<order_id>")
-def pay_page(order_id):
-    # Simple payment page that opens Razorpay Checkout
-    return render_template(
-        "pay.html",
-        order_id=order_id,
-        razorpay_key_id=RAZORPAY_KEY_ID
-    )
-
-@app.route("/api/create_qr_order", methods=["POST"])
-def create_qr_order():
-    require_esp32_auth()
-
-    data = request.get_json(silent=True) or {}
-    amount = int(data.get("amount", 0))
-
-    if amount <= 0:
-        return jsonify({"error": "Invalid amount"}), 400
-
-    # Create Razorpay order (still needed for tracking + webhook)
-    order = razorpay_client.order.create({
-        "amount": amount * 100,
-        "currency": "INR",
-        "payment_capture": 1
-    })
-
-    insert_order(order["id"], amount)
-
-@app.route("/pay/<order_id>")
-def pay_page(order_id):
-    return render_template(
-        "pay.html",
-        order_id=order_id,
-        razorpay_key_id=RAZORPAY_KEY_ID
-    )
-
 
 # --------------------------------------------------
 # MAIN
