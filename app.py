@@ -191,6 +191,33 @@ def pay_page(order_id):
         razorpay_key_id=RAZORPAY_KEY_ID
     )
 
+@app.route("/api/create_qr_order", methods=["POST"])
+def create_qr_order():
+    require_esp32_auth()
+
+    data = request.get_json(silent=True) or {}
+    amount = int(data.get("amount", 0))
+
+    if amount <= 0:
+        return jsonify({"error": "Invalid amount"}), 400
+
+    # Create Razorpay order (still needed for tracking + webhook)
+    order = razorpay_client.order.create({
+        "amount": amount * 100,
+        "currency": "INR",
+        "payment_capture": 1
+    })
+
+    insert_order(order["id"], amount)
+
+@app.route("/pay/<order_id>")
+def pay_page(order_id):
+    return render_template(
+        "pay.html",
+        order_id=order_id,
+        razorpay_key_id=RAZORPAY_KEY_ID
+    )
+
 
 # --------------------------------------------------
 # MAIN
